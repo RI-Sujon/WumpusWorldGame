@@ -1,5 +1,6 @@
 package com.example.wumpusworldgame;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -21,9 +22,11 @@ class GameBoard extends View{
     private GameEngine gameEngine = new GameEngine() ;
 
     private Bitmap agentBitmap[] = new Bitmap[4] ;
-    private Bitmap wumpusBitmap, pitBitmap, goldBitmap, breezeBitmap, stenchBitmap  ;
+    private Bitmap wumpusBitmap, pitBitmap, goldBitmap, breezeBitmap, stenchBitmap, grassBitmap, arrowBitmap  ;
 
     private int ROW=10, COLUMN=10 ;
+
+    private int gameOverFlag = 0 ;
 
     public GameBoard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -50,7 +53,6 @@ class GameBoard extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
-
         paint.setStyle(Paint.Style.STROKE) ;
         paint.setAntiAlias(true);
 
@@ -63,6 +65,8 @@ class GameBoard extends View{
         goldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gold3) ;
         breezeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.breeze) ;
         stenchBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.stench2) ;
+        grassBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.grass) ;
+        arrowBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow) ;
 
         agentBitmap[0] = Bitmap.createScaledBitmap(agentBitmap[0],(int)(cellSize*0.5), (int)(cellSize*0.5), false) ;
         agentBitmap[1] = Bitmap.createScaledBitmap(agentBitmap[1],(int)(cellSize*0.5), (int)(cellSize*0.5), false) ;
@@ -73,6 +77,7 @@ class GameBoard extends View{
         goldBitmap = Bitmap.createScaledBitmap(goldBitmap,(int)(cellSize*0.3), (int)(cellSize*0.40), false) ;
         breezeBitmap = Bitmap.createScaledBitmap(breezeBitmap,(int)(cellSize*0.3), (int)(cellSize*0.15), false) ;
         stenchBitmap = Bitmap.createScaledBitmap(stenchBitmap,(int)(cellSize*0.35), (int)(cellSize*0.2), false) ;
+        grassBitmap = Bitmap.createScaledBitmap(grassBitmap,(int)(cellSize*1), (int)(cellSize*1), false) ;
 
         drawGameBoard(canvas) ;
         drawMarkers(canvas) ;
@@ -80,7 +85,7 @@ class GameBoard extends View{
 
     private void drawGameBoard(Canvas canvas){
         paint.setColor(boardColor);
-        paint.setStrokeWidth(5);
+        paint.setStrokeWidth(1);
 
         for(int c=0; c<=COLUMN; c++){
             canvas.drawLine(cellSize*c, 0, cellSize*c, canvas.getWidth(), paint);
@@ -95,6 +100,8 @@ class GameBoard extends View{
         for(int r=0; r<ROW; r++){
             for(int c=0; c<COLUMN; c++){
                 if(gameEngine.getGameBoard()[r][c][0]==0){
+                    drawGrass(canvas, r, c);
+                    continue;
                 }
                 else if(gameEngine.getGameBoard()[r][c][0]==1){
 
@@ -138,8 +145,12 @@ class GameBoard extends View{
             }
         }
 
-        drawAgent(canvas, gameEngine.getAgentCurrentRow(), gameEngine.getAgentCurrentColumn(), gameEngine.getAgentFaceDirection());
-
+        if(gameOverFlag==0) {
+            drawAgent(canvas, gameEngine.getAgentCurrentRow(), gameEngine.getAgentCurrentColumn(), gameEngine.getAgentFaceDirection());
+        }
+        else{
+            gameOverFlag = 0 ;
+        }
     }
 
     private void drawStench(Canvas canvas, int row, int col){
@@ -166,7 +177,12 @@ class GameBoard extends View{
         canvas.drawBitmap(agentBitmap[faceDirection],(float)(col*cellSize + cellSize*0.2),(float)(row*cellSize + cellSize*0.35), null);
     }
 
-    public void moveForward(){
+    private void drawGrass(Canvas canvas, int row, int col){
+        canvas.drawBitmap(grassBitmap,(float)(col*cellSize),(float)(row*cellSize), null);
+    }
+
+    public int moveForward(){
+        gameEngine.numberOfMove++ ;
         if(gameEngine.getAgentFaceDirection()==0 && gameEngine.getAgentCurrentColumn()!=COLUMN-1){
             gameEngine.setAgentCurrentColumn(gameEngine.getAgentCurrentColumn()+1);
         }
@@ -179,9 +195,21 @@ class GameBoard extends View{
         else if(gameEngine.getAgentFaceDirection()==3 && gameEngine.getAgentCurrentRow()!=0){
             gameEngine.setAgentCurrentRow(gameEngine.getAgentCurrentRow()-1);
         }
+
+        gameEngine.setCellViewed();
+        if(gameEngine.checkGameOverByWumpus()){
+            gameOverFlag = -1 ;
+            return -6 ;
+        }
+        if(gameEngine.checkGameOverByPit()){
+            gameOverFlag = -1 ;
+            return -4 ;
+        }
+        return 0;
     }
 
     public void turn90Clockwise(){
+        gameEngine.numberOfMove++ ;
         if(gameEngine.getAgentFaceDirection()==3){
             gameEngine.setAgentFaceDirection(0);
         }else{
@@ -190,10 +218,37 @@ class GameBoard extends View{
     }
 
     public void turn90AntiClockwise(){
+        gameEngine.numberOfMove++ ;
         if(gameEngine.getAgentFaceDirection()==0){
             gameEngine.setAgentFaceDirection(3);
         }else{
             gameEngine.setAgentFaceDirection(gameEngine.getAgentFaceDirection()-1);
         }
+    }
+
+    public void collectGold(){
+        gameEngine.numberOfMove++ ;
+        gameEngine.collectGold() ;
+    }
+
+    public void shootByArrow(){
+        gameEngine.deleteWumpusByArrowShooting();
+    }
+
+    public int getNumberOfGoldCollected(){
+        return gameEngine.numberOfGoldCollected ;
+    }
+
+    public int getNumberOfArrowUsed(){
+        return gameEngine.numberOfArrowUsed ;
+    }
+
+    public int getNumberOfMove(){
+        return gameEngine.numberOfMove ;
+    }
+
+    public void resetGameBoard(){
+        gameEngine = new GameEngine() ;
+        invalidate();
     }
 }
