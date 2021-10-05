@@ -235,12 +235,24 @@ class GameBoard extends View{
         gameEngine.deleteWumpusByArrowShooting();
     }
 
+    public int getNumberOfGoldRemaining(){
+        return gameEngine.numberOfGold - gameEngine.numberOfGoldCollected ;
+    }
+
+    public int getNumberOfArrowRemaining(){
+        return gameEngine.numberOfArrow - gameEngine.numberOfArrowUsed ;
+    }
+
     public int getNumberOfGoldCollected(){
         return gameEngine.numberOfGoldCollected ;
     }
 
     public int getNumberOfArrowUsed(){
         return gameEngine.numberOfArrowUsed ;
+    }
+
+    public int getNumberOfWumpusKilled(){
+        return gameEngine.numberOfWumpusKilled ;
     }
 
     public int getNumberOfMove(){

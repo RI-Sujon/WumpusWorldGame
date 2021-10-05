@@ -32,8 +32,8 @@ public class GameActivity extends AppCompatActivity {
         moveCounter = findViewById(R.id.moves) ;
         arrowCounter = findViewById(R.id.arrows) ;
 
-        goldCounter.setText("0");
-        arrowCounter.setText("0");
+        goldCounter.setText(gameBoard.getNumberOfGoldRemaining()+"");
+        arrowCounter.setText( gameBoard.getNumberOfArrowRemaining()+"");
         moveCounter.setText("0");
     }
 
@@ -65,17 +65,23 @@ public class GameActivity extends AppCompatActivity {
         gameBoard.collectGold();
         gameBoard.invalidate();
         updateScoreBoard();
+
+        if(gameBoard.getNumberOfGoldRemaining()==0){
+            gameOverMessage("win");
+        }
     }
 
     public void shootByArrow(View view){
-        gameBoard.shootByArrow();
-        gameBoard.invalidate();
-        updateScoreBoard();
+        if(gameBoard.getNumberOfArrowRemaining()>0){
+            gameBoard.shootByArrow();
+            gameBoard.invalidate();
+            updateScoreBoard();
+        }
     }
 
     public void updateScoreBoard(){
-        goldCounter.setText(gameBoard.getNumberOfGoldCollected() + "");
-        arrowCounter.setText(gameBoard.getNumberOfArrowUsed() + "");
+        goldCounter.setText(gameBoard.getNumberOfGoldRemaining() + "");
+        arrowCounter.setText(gameBoard.getNumberOfArrowRemaining() + "");
         moveCounter.setText(gameBoard.getNumberOfMove() + "");
     }
 
@@ -97,14 +103,20 @@ public class GameActivity extends AppCompatActivity {
         else if(str=="pit"){
             gameOverTypeMessage.setText("Oops...You fall in a Pit");
         }
+        else if(str=="win"){
+            gameOverTypeMessage.setText("Congratulations...You win.");
+        }
 
-        score.setText("SCORE: " + (gameBoard.getNumberOfGoldCollected()*100 - gameBoard.getNumberOfMove() - gameBoard.getNumberOfArrowUsed()*10));
+        score.setText("SCORE: " + (gameBoard.getNumberOfGoldCollected()*100 - gameBoard.getNumberOfMove() - gameBoard.getNumberOfArrowUsed()*10 + gameBoard.getNumberOfWumpusKilled()*50));
 
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 gameBoard.resetGameBoard();
+                goldCounter.setText(gameBoard.getNumberOfGoldRemaining()+"");
+                arrowCounter.setText( gameBoard.getNumberOfArrowRemaining()+"");
+                moveCounter.setText("0");
             }
         });
 

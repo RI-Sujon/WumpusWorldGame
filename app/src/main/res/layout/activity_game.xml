@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
-                    android:text="GOLD:"
+                    android:text="GOLD REMAINING: "
                     android:textStyle="bold"
                     android:textColor="@color/SaddleBrown" />
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
-                    android:text="MOVES:"
+                    android:text="TOTAL MOVES: "
                     android:textStyle="bold"
                     android:layout_gravity="right"
                     android:textColor="@color/SaddleBrown"/>
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
-                android:text="ARROW REMAINING:"
+                android:text="ARROW REMAINING: "
                 android:layout_gravity="right"
                 android:textColor="@color/Black"/>
             <TextView
