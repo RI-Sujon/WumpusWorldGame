@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="500dp"
-        android:onClick="goTo"/>
+        android:onClick="goToConfigureGameActivity"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,8 @@ public class GameActivity extends AppCompatActivity {
     GameBoard gameBoard ;
     TextView goldCounter, moveCounter, arrowCounter ;
 
+    int numberOfGold, numberOfPit, numberOfWumpus ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,13 @@ public class GameActivity extends AppCompatActivity {
         goldCounter = findViewById(R.id.goldCounter) ;
         moveCounter = findViewById(R.id.moves) ;
         arrowCounter = findViewById(R.id.arrows) ;
+
+        Bundle extras = getIntent().getExtras() ;
+        numberOfGold = Integer.valueOf(extras.getString("numberOfGold"));
+        numberOfPit = Integer.valueOf(extras.getString("numberOfPit"));
+        numberOfWumpus = Integer.valueOf(extras.getString("numberOfWumpus"));
+
+        gameBoard.setEnvironment(numberOfGold, numberOfPit, numberOfWumpus);
 
         goldCounter.setText(gameBoard.getNumberOfGoldRemaining()+"");
         arrowCounter.setText( gameBoard.getNumberOfArrowRemaining()+"");
@@ -113,7 +122,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                gameBoard.resetGameBoard();
+                gameBoard.setEnvironment(numberOfGold, numberOfPit, numberOfWumpus);
                 goldCounter.setText(gameBoard.getNumberOfGoldRemaining()+"");
                 arrowCounter.setText( gameBoard.getNumberOfArrowRemaining()+"");
                 moveCounter.setText("0");

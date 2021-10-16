@@ -22,11 +22,13 @@ class GameBoard extends View{
     private GameEngine gameEngine = new GameEngine() ;
 
     private Bitmap agentBitmap[] = new Bitmap[4] ;
-    private Bitmap wumpusBitmap, pitBitmap, goldBitmap, breezeBitmap, stenchBitmap, grassBitmap, arrowBitmap  ;
+    private Bitmap wumpusBitmap, pitBitmap, goldBitmap, glitterBitmap, breezeBitmap, stenchBitmap, grassBitmap, arrowBitmap  ;
 
     private int ROW=10, COLUMN=10 ;
 
     private int gameOverFlag = 0 ;
+
+    int Visited=0, Breeze=1, Gold=2, SafeSquare=3, Pit=4, Stench=5, Wumpus=6, Glitter=7;
 
     public GameBoard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -63,6 +65,7 @@ class GameBoard extends View{
         wumpusBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ganger) ;
         pitBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pit) ;
         goldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gold3) ;
+        glitterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glitter) ;
         breezeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.breeze) ;
         stenchBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.stench2) ;
         grassBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.grass) ;
@@ -75,6 +78,7 @@ class GameBoard extends View{
         wumpusBitmap = Bitmap.createScaledBitmap(wumpusBitmap,(int)(cellSize*0.75), (int)(cellSize*0.7), false) ;
         pitBitmap = Bitmap.createScaledBitmap(pitBitmap,(int)(cellSize*0.8), (int)(cellSize*0.5), false) ;
         goldBitmap = Bitmap.createScaledBitmap(goldBitmap,(int)(cellSize*0.3), (int)(cellSize*0.40), false) ;
+        glitterBitmap = Bitmap.createScaledBitmap(glitterBitmap,(int)(cellSize*0.38), (int)(cellSize*0.38), false) ;
         breezeBitmap = Bitmap.createScaledBitmap(breezeBitmap,(int)(cellSize*0.3), (int)(cellSize*0.15), false) ;
         stenchBitmap = Bitmap.createScaledBitmap(stenchBitmap,(int)(cellSize*0.35), (int)(cellSize*0.2), false) ;
         grassBitmap = Bitmap.createScaledBitmap(grassBitmap,(int)(cellSize*1), (int)(cellSize*1), false) ;
@@ -99,48 +103,54 @@ class GameBoard extends View{
     private void drawMarkers(Canvas canvas){
         for(int r=0; r<ROW; r++){
             for(int c=0; c<COLUMN; c++){
-                if(gameEngine.getGameBoard()[r][c][0]==0){
-                    drawGrass(canvas, r, c);
-                    continue;
+                if(gameEngine.getGameBoard()[r][c][Visited]==0){
+                    //drawGrass(canvas, r, c);
+                    //continue;
                 }
-                else if(gameEngine.getGameBoard()[r][c][0]==1){
+                else if(gameEngine.getGameBoard()[r][c][Visited]==1){
 
                 }
 
-                if(gameEngine.getGameBoard()[r][c][1]==0){
+                if(gameEngine.getGameBoard()[r][c][Breeze]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][1]==1){
+                else if(gameEngine.getGameBoard()[r][c][Breeze]>=1){
                     drawBreeze(canvas, r, c);
                 }
 
-                if(gameEngine.getGameBoard()[r][c][2]==0){
+                if(gameEngine.getGameBoard()[r][c][Gold]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][2]==1){
+                else if(gameEngine.getGameBoard()[r][c][Gold]==1){
                     drawGold(canvas, r, c);
                 }
 
-                if(gameEngine.getGameBoard()[r][c][3]==0){
+                if(gameEngine.getGameBoard()[r][c][SafeSquare]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][3]==1){
+                else if(gameEngine.getGameBoard()[r][c][SafeSquare]==1){
 
                 }
 
-                if(gameEngine.getGameBoard()[r][c][4]==0){
+                if(gameEngine.getGameBoard()[r][c][Pit]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][4]==1){
+                else if(gameEngine.getGameBoard()[r][c][Pit]==1){
                     drawPit(canvas, r, c);
                 }
 
-                if(gameEngine.getGameBoard()[r][c][5]==0){
+                if(gameEngine.getGameBoard()[r][c][Stench]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][5]==1){
+                else if(gameEngine.getGameBoard()[r][c][Stench]>=1){
                     drawStench(canvas, r, c);
                 }
 
-                if(gameEngine.getGameBoard()[r][c][6]==0){
+                if(gameEngine.getGameBoard()[r][c][Wumpus]==0){
                 }
-                else if(gameEngine.getGameBoard()[r][c][6]==1){
+                else if(gameEngine.getGameBoard()[r][c][Wumpus]==1){
                     drawWumpus(canvas, r, c);
+                }
+
+                if(gameEngine.getGameBoard()[r][c][Glitter]==0){
+                }
+                else if(gameEngine.getGameBoard()[r][c][Glitter]>=1){
+                    drawGlitter(canvas, r, c);
                 }
             }
         }
@@ -153,6 +163,10 @@ class GameBoard extends View{
         }
     }
 
+    private void drawGlitter(Canvas canvas, int row, int col){
+        canvas.drawBitmap(glitterBitmap,(float)(col*cellSize + cellSize*0.6),(float)(row*cellSize + cellSize*0.6), null);
+    }
+
     private void drawStench(Canvas canvas, int row, int col){
         canvas.drawBitmap(stenchBitmap, (float)(col*cellSize + cellSize*0.07),(float)(row*cellSize + cellSize*0.05), null);
     }
@@ -162,7 +176,7 @@ class GameBoard extends View{
     }
 
     private void drawGold(Canvas canvas, int row, int col){
-        canvas.drawBitmap(goldBitmap,(float)(col*cellSize + cellSize*0.65),(float)(row*cellSize + cellSize*0.55), null);
+        canvas.drawBitmap(goldBitmap,(float)(col*cellSize + cellSize*0.05),(float)(row*cellSize + cellSize*0.55), null);
     }
 
     private void drawWumpus(Canvas canvas, int row, int col){
@@ -179,6 +193,12 @@ class GameBoard extends View{
 
     private void drawGrass(Canvas canvas, int row, int col){
         canvas.drawBitmap(grassBitmap,(float)(col*cellSize),(float)(row*cellSize), null);
+    }
+
+    public void setEnvironment(int numberOfGold, int numberOfPit, int numberOfWumpus){
+        gameEngine = new GameEngine() ;
+        gameEngine.setRandomEnvironment(numberOfGold, numberOfPit, numberOfWumpus) ;
+        invalidate() ;
     }
 
     public int moveForward(){
@@ -257,10 +277,5 @@ class GameBoard extends View{
 
     public int getNumberOfMove(){
         return gameEngine.numberOfMove ;
-    }
-
-    public void resetGameBoard(){
-        gameEngine = new GameEngine() ;
-        invalidate();
     }
 }
