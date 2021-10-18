@@ -17,24 +17,45 @@ public class GameEngine {
     private int agentFaceDirection = 0 ;
 
     public int numberOfGoldCollected = 0 ;
-    public int numberOfGold = 0 ;
+    public int numberOfGold = 1 ;
     public int numberOfPit = 0 ;
     public int numberOfWumpus = 0 ;
     public int numberOfArrowUsed = 0 ;
-    public int numberOfArrow = 0 ;
+    public int numberOfArrow = 2 ;
     public int numberOfMove = 0 ;
     public int numberOfWumpusKilled = 0 ;
 
     private int suggestedNextMoveRow, suggestedNextMoveColumn;
 
-    int Visited=0,Breeze=1,Gold=2,SafeSquare=3,Pit=4,Stench=5,Wumpus=6,Glitter=7;
+    int Visited=0, Breeze=1, Gold=2, SafeSquare=3, Pit=4, Stench=5, Wumpus=6, Glitter=7;
 
     GameEngine(){
         board = new int[ROW][COLUMN][nDATA] ;
     }
 
-    public void setRandomEnvironment(int numberOfGold, int numberOfPit, int numberOfWumpus){
+    public void setFixedEnvironment(int[] pit, int[] wumpus, int goldLocation){
+        int myPit[]  ;
+        int myWumpus[]  ;
 
+        myPit = pit;
+        myWumpus = wumpus;
+
+        setWumpusOrPitOrGoldAndWarning(goldLocation/10, goldLocation%10, Gold);
+
+        for (int i=0; i<10; i++){
+            if(myPit[i]!=-1){
+                setWumpusOrPitOrGoldAndWarning(myPit[i]/10, myPit[i]%10, Pit);
+            }
+
+            if(myWumpus[i]!=-1){
+                setWumpusOrPitOrGoldAndWarning(myWumpus[i]/10, myWumpus[i]%10, Wumpus);
+            }
+        }
+
+        board[agentCurrentRow][agentCurrentColumn][0] = 1 ;
+    }
+
+    public void setRandomEnvironment(int numberOfGold, int numberOfPit, int numberOfWumpus){
         this.numberOfGold = numberOfGold ;
         this.numberOfPit = numberOfPit ;
         this.numberOfWumpus = numberOfWumpus ;
@@ -123,83 +144,6 @@ public class GameEngine {
         } while(!bfs());
     }
 
-//    private boolean bfs( )
-//    {
-//        ArrayList<Integer> queue = new ArrayList<Integer>();
-//        boolean isSolutionExist = false;
-//
-//        int[][] checked = new int[ROW][COLUMN];
-//        int[][] nodesID = new int[ROW][COLUMN];
-//        int[][] relationships = new int[ROW * COLUMN][ROW * COLUMN];
-//
-//        int node_counter = 0;
-//
-//        for (int row = 0; row < ROW; row++ ) {
-//            for (int col = 0; col < COLUMN; col++ ) {
-//                checked[row][col] = 0;
-//            }
-//        }
-//
-//        for (int row = 0; row < ROW; row++ ) {
-//            for (int col = 0; col < COLUMN; col++ ) {
-//                nodesID[row][col] = node_counter;
-//                node_counter += 1;
-//            }
-//        }
-//
-//        for (int row = 0; row < ROW * COLUMN; row++ ) {
-//            for (int col = 0; col < ROW * COLUMN; col++ ) {
-//                relationships[row][col] = 0;
-//            }
-//        }
-//
-//        for (int row = 0; row < ROW; row++ ) {
-//            for (int col = 0; col < COLUMN; col++ ) {
-//                try {
-//                    relationships[ nodesID[row][col] ][ nodesID[row][col-1]  ] = 1;
-//                }
-//                catch( ArrayIndexOutOfBoundsException e ){  }
-//
-//                try {
-//                    relationships[ nodesID[row][col] ][ nodesID[row-1][col]  ] = 1;
-//                }
-//                catch( ArrayIndexOutOfBoundsException e ){  }
-//
-//                try {
-//                    relationships[ nodesID[row][col] ][ nodesID[row][col+1]  ] = 1;
-//                }
-//                catch( ArrayIndexOutOfBoundsException e ){  }
-//
-//                try {
-//                    relationships[ nodesID[row][col] ][ nodesID[row+1][col]  ] = 1;
-//                }
-//                catch( ArrayIndexOutOfBoundsException e ){  }
-//            }
-//        }
-//
-//        queue.add( nodesID[ROW -1][0 ] );
-//        checked[ROW -1][0 ] = 1;
-//
-//        while( !queue.isEmpty() ) {
-//            int node = queue.remove( 0 );
-//
-//            if(board[(int)node/10][(int)node%10][Gold] == 1) {
-//                isSolutionExist = true;
-//                break;
-//            }
-//            else {
-//                for (int i = 0; i<ROW*COLUMN; i++ ) {
-//                    if ( relationships[node][i] == 1 && board[(int)i/10][(int)i%10][Pit] != 1 && checked[(int)i/10][(int)i%10] != 1 ) {
-//                        queue.add(nodesID[(int)i/10][(int)i%10]);
-//                        checked[(int)i/10][(int)i%10] = 1;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return isSolutionExist;
-//    }
-
     private boolean bfs( ) {
         boolean isSolutionExist = false;
 
@@ -283,7 +227,6 @@ public class GameEngine {
 
         return isSolutionExist;
     }
-
 
     private void setWumpusOrPitOrGoldAndWarning(int row, int column, int type){
         board[row][column][type] = 1 ;
@@ -432,7 +375,7 @@ public class GameEngine {
         return false;
     }
 
-    public void setCellViewed(){
+    public void setCellVisited(){
         board[agentCurrentRow][agentCurrentColumn][Visited] = 1 ;
     }
 

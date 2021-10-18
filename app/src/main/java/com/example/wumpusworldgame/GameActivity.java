@@ -23,6 +23,10 @@ public class GameActivity extends AppCompatActivity {
     TextView goldCounter, moveCounter, arrowCounter ;
 
     int numberOfGold, numberOfPit, numberOfWumpus ;
+    int pit[] = new int[10] ;
+    int wumpus[] = new int[10] ;
+
+    String type = "" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +39,27 @@ public class GameActivity extends AppCompatActivity {
         arrowCounter = findViewById(R.id.arrows) ;
 
         Bundle extras = getIntent().getExtras() ;
-        numberOfGold = Integer.valueOf(extras.getString("numberOfGold"));
-        numberOfPit = Integer.valueOf(extras.getString("numberOfPit"));
-        numberOfWumpus = Integer.valueOf(extras.getString("numberOfWumpus"));
 
-        gameBoard.setEnvironment(numberOfGold, numberOfPit, numberOfWumpus);
+        type = extras.getString("type") ;
+        if(type=="random"){
+            numberOfGold = Integer.valueOf(extras.getString("numberOfGold"));
+            numberOfPit = Integer.valueOf(extras.getString("numberOfPit"));
+            numberOfWumpus = Integer.valueOf(extras.getString("numberOfWumpus"));
+
+            gameBoard.setEnvironment(numberOfGold, numberOfPit, numberOfWumpus);
+        }
+        else if(type=="fixed"){
+            pit[0] = Integer.valueOf(extras.getString("pit1")) ;
+            pit[1] = Integer.valueOf(extras.getString("pit2")) ;
+            pit[2] = Integer.valueOf(extras.getString("pit3")) ;
+            pit[3] = Integer.valueOf(extras.getString("pit4")) ;
+            wumpus[0] = Integer.valueOf(extras.getString("wumpus1")) ;
+            wumpus[1] = Integer.valueOf(extras.getString("wumpus2")) ;
+            wumpus[2] = Integer.valueOf(extras.getString("wumpus3")) ;
+            wumpus[3] = Integer.valueOf(extras.getString("wumpus4")) ;
+
+            gameBoard.setEnvironment(numberOfGold, numberOfPit, numberOfWumpus);
+        }
 
         goldCounter.setText(gameBoard.getNumberOfGoldRemaining()+"");
         arrowCounter.setText( gameBoard.getNumberOfArrowRemaining()+"");

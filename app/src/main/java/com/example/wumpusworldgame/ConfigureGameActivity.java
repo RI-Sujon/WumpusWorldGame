@@ -24,6 +24,18 @@ public class ConfigureGameActivity extends AppCompatActivity {
     public void playGame(View view){
         Intent intent = new Intent(getApplicationContext(),GameActivity.class) ;
 
+        intent.putExtra("type", "random") ;
+        intent.putExtra("numberOfGold", numberOfGoldEditText.getText().toString()) ;
+        intent.putExtra("numberOfPit", numberOfPitEditText.getText().toString()) ;
+        intent.putExtra("numberOfWumpus", numberOfWumpusEditText.getText().toString()) ;
+        startActivity(intent) ;
+        finish() ;
+    }
+
+    public void playGameByAI(View view){
+        Intent intent = new Intent(getApplicationContext(),AIActivity.class) ;
+
+        intent.putExtra("type", "random") ;
         intent.putExtra("numberOfGold", numberOfGoldEditText.getText().toString()) ;
         intent.putExtra("numberOfPit", numberOfPitEditText.getText().toString()) ;
         intent.putExtra("numberOfWumpus", numberOfWumpusEditText.getText().toString()) ;

@@ -49,7 +49,7 @@ class GameBoard extends View{
 
         int dimensions = Math.min(getMeasuredWidth(), getMeasuredHeight()) ;
         cellSize = dimensions/COLUMN ;
-        setMeasuredDimension(dimensions, dimensions);
+        setMeasuredDimension(dimensions, dimensions) ;
     }
 
     @Override
@@ -85,6 +85,12 @@ class GameBoard extends View{
 
         drawGameBoard(canvas) ;
         drawMarkers(canvas) ;
+
+        //invalidate();
+    }
+
+    public int[][][] getGameBoard(){
+        return gameEngine.getGameBoard() ;
     }
 
     private void drawGameBoard(Canvas canvas){
@@ -104,11 +110,10 @@ class GameBoard extends View{
         for(int r=0; r<ROW; r++){
             for(int c=0; c<COLUMN; c++){
                 if(gameEngine.getGameBoard()[r][c][Visited]==0){
-                    //drawGrass(canvas, r, c);
-                    //continue;
+                    drawGrass(canvas, r, c);
+                    continue;
                 }
                 else if(gameEngine.getGameBoard()[r][c][Visited]==1){
-
                 }
 
                 if(gameEngine.getGameBoard()[r][c][Breeze]==0){
@@ -150,7 +155,7 @@ class GameBoard extends View{
                 if(gameEngine.getGameBoard()[r][c][Glitter]==0){
                 }
                 else if(gameEngine.getGameBoard()[r][c][Glitter]>=1){
-                    drawGlitter(canvas, r, c);
+                    //drawGlitter(canvas, r, c);
                 }
             }
         }
@@ -198,7 +203,23 @@ class GameBoard extends View{
     public void setEnvironment(int numberOfGold, int numberOfPit, int numberOfWumpus){
         gameEngine = new GameEngine() ;
         gameEngine.setRandomEnvironment(numberOfGold, numberOfPit, numberOfWumpus) ;
+
         invalidate() ;
+    }
+
+    public void setEnvironment2(int[] pit, int[] wumpus, int goldLocation){
+        gameEngine = new GameEngine() ;
+        gameEngine.setFixedEnvironment(pit, wumpus, goldLocation) ;
+
+        invalidate() ;
+    }
+
+    public void moveAgent(int row, int column){
+        gameEngine.numberOfMove++ ;
+        gameEngine.setAgentCurrentRow(row);
+        gameEngine.setAgentCurrentColumn(column);
+        gameEngine.setCellVisited();
+        //invalidate();
     }
 
     public int moveForward(){
@@ -216,7 +237,7 @@ class GameBoard extends View{
             gameEngine.setAgentCurrentRow(gameEngine.getAgentCurrentRow()-1);
         }
 
-        gameEngine.setCellViewed();
+        gameEngine.setCellVisited();
         if(gameEngine.checkGameOverByWumpus()){
             gameOverFlag = -1 ;
             return -6 ;

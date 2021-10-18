@@ -29,6 +29,7 @@
             android:paddingTop="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:visibility="gone"
             android:textColor="@color/black"/>
 
         <EditText
@@ -37,8 +38,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:backgroundTint="@color/black"
+            android:text="1"
             android:inputType="numberDecimal"
-            android:hint="5~10"/>
+            android:hint="5~10"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_marginTop="30dp"
@@ -75,14 +78,25 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:inputType="number"
+            android:hint="1-5"
             android:backgroundTint="@color/black"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:text="PLAY GAME"
-            android:onClick="playGame"/>
+            android:onClick="playGame"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="PLAY BY AI"
+            android:onClick="playGameByAI"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

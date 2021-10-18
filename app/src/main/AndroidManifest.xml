@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WumpusWorldGame">
-        <activity android:name=".ConfigureGameActivity"></activity>
+        <activity android:name=".FixedEnvironment"></activity>
+        <activity android:name=".AIActivity" />
+        <activity android:name=".ConfigureGameActivity" />
         <activity android:name=".GameActivity" />
         <activity
             android:name=".MainActivity"

@@ -19,4 +19,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent) ;
         finish() ;
     }
+
+    public void goToFixedEnvironment(View view){
+        Intent intent = new Intent(getApplicationContext(),FixedEnvironment.class) ;
+        startActivity(intent) ;
+        finish() ;
+    }
 }
