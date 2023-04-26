@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:custom="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+tools:context=".SetDifficultyLevelActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Low"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/Navy"
+        android:textColor="@color/white"
+        android:onClick="setLow"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:text="Midium"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Navy"
+        android:onClick="setMedium"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:text="High"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Navy"
+        android:onClick="setHigh"/>
+
+</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/AliceBlue"
+    tools:context=".GameActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/game_level_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:textColor="@color/Navy"
+            android:fontFamily="serif-monospace"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:weightSum="25">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="12">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="GOLD REMAINING: "
+                    android:textStyle="bold"
+                    android:textColor="@color/SaddleBrown" />
+                <TextView
+                    android:id="@+id/goldCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/Black"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="12"
+                android:gravity="right">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="TOTAL MOVES: "
+                    android:textStyle="bold"
+                    android:layout_gravity="right"
+                    android:textColor="@color/SaddleBrown"/>
+                <TextView
+                    android:id="@+id/moves"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/Black"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.example.wumpusworldgame.GameBoard
+            android:id="@+id/gameBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/GreenYellow"
+            custom:boardLineColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="ARROW REMAINING: "
+                android:layout_gravity="right"
+                android:textColor="@color/Black"/>
+            <TextView
+                android:id="@+id/arrows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/Black"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Turn 90 Left"
+                android:layout_margin="7dp"
+                android:layout_weight="1"
+                android:onClick="turn90AntiClockwise"/>
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="MOVE Forward"
+                android:layout_margin="7dp"
+                android:layout_weight="1"
+                android:onClick="moveForward"/>
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Turn 90 Right"
+                android:layout_margin="7dp"
+                android:onClick="turn90Clockwise"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:text="Shoot"
+                android:onClick="shootByArrow"
+                android:layout_margin="7dp" />
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:text="Collect Gold"
+                android:layout_margin="7dp"
+                android:onClick="collectGold"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
